@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const shortid=require('shortid')
 const dotenv =require('dotenv')
 
+
 dotenv.config()
 
 const app = express();
@@ -54,6 +55,8 @@ app.delete('/api/products/:id',async(req,res)=>{
     res.send(deletedProduct)
 })
 
+
+
 const Order = mongoose.model("order",new mongoose.Schema({
     _id:{type:String,default:shortid.generate},
     email:String,
@@ -76,6 +79,16 @@ app.post('/api/orders',async(req,res)=>{
     res.send(order)
 })
 
+app.get('/api/orders',async(req,res)=>{
+    const orders=await Order.find({})    
+    res.send(orders)
+})
+
+app.delete('/api/orders/:id',async(req,res)=>{
+    const order=await Order.findById(req.params.id)
+    req.send(order)
+})
+
 const port = process.env.PORT || 5000;
 app.listen(port,(err)=>{
     if (err) {
@@ -84,3 +97,4 @@ app.listen(port,(err)=>{
         console.log(`puerto ${port}` )
     }
 })
+
